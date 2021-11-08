@@ -1,0 +1,54 @@
+library(clusterCrit) #TODO : CHANGE THIS
+library(biwt)
+
+# 1 - building the input matrix
+mat1.data = c(96,122.5,81,95.5,89,116,79,180,63.5,116,73,79,73,83,133.5,89,105,104,81,66.5,81,104,72.5,
+              126,270,167.5,65,92,61.5,131,145,91.5,138,95.5,153,139,80,198,123,90.5,126.5,92,121,94.5,60,60,
+              75,215.5,140.5,118.5,92.5,87,69.5,122.5,96.5,77,88.5,84.6,135,90.1,256.6,82.9,81.6,101.2,103.8,121.5,80,79.5,68.9,
+              62,81.5,243,220.5,78,95,68.5,60,103.5,73.5,64,61,78.5,127,75,83,87.5,72,155,133,70,61.5,71,
+              189.5,75,97,73.5,82.5,60.5,65,83.5,60.5,65,72.5,150,134,72,89,61.5,175,233,83.5,71.5,83,123,135)
+input_matrix = matrix(mat1.data,nrow=23,ncol=5)
+
+# 2 - Standardize the observation with median and mean absolute deviation (MAD)
+standarized = input_matrix #TODO: Change this
+
+# 3 - Set the breakdown point
+breakdown_point = 0.4  
+  
+# 4 - Calculate Tuckey's biweight correlation matrix
+tuckeys_biweight_cor_matrix = biwt.cor(standarized)
+
+# 5 - Calculate the correlation matrix's eigenvectors and eigenvalues (Eigenvalues = % variance captured)
+ev = eigen(tuckeys_biweight_cor_matrix)
+
+eigen_vectors = ev$vectors
+eigen_values = ev$values
+
+print(eigen_values)
+
+# 6 - Select the most important PCs: the number of PCs is at least 70% of cumulative percentage of total variation - 
+total_variance = sum(eigen_values)
+threshold = total_variance*0.7
+
+n = 0
+for (element in 1:length(eigen_values)){
+  if (sum(eigen_values[1:element]) >= threshold){
+    n = element
+    break
+  }
+}
+
+pcs = prcomp(tuckeys_biweight_cor_matrix)
+
+# 7 - Derive the new data set
+new_dataset = pcs$rotation[,1:n]
+
+# 8 - Calculate Calinski-Harabasz index in the new data set to determine the best number of cluster
+number_clusters = intCriteria(new_dataset, k$cluster, 'Calinski_Harabasz')
+print(number_clusters)
+
+# 9 - Apply k-means method to new data set
+k = kmeans(new_dataset, 2, iter.max = 10000, nstart=10)
+print(k$centers)
+
+#TODO:plotting ??
