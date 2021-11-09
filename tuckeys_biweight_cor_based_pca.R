@@ -1,4 +1,4 @@
-library(clusterCrit) #TODO : CHANGE THIS
+library(NbClust)
 library(biwt)
 
 # 1 - building the input matrix
@@ -10,7 +10,7 @@ mat1.data = c(96,122.5,81,95.5,89,116,79,180,63.5,116,73,79,73,83,133.5,89,105,1
 input_matrix = matrix(mat1.data,nrow=23,ncol=5)
 
 # 2 - Standardize the observation with median and mean absolute deviation (MAD)
-standarized = input_matrix #TODO: Change this
+standarized = scale(input_matrix)
 
 # 3 - Set the breakdown point
 breakdown_point = 0.4  
@@ -44,11 +44,11 @@ pcs = prcomp(tuckeys_biweight_cor_matrix)
 new_dataset = pcs$rotation[,1:n]
 
 # 8 - Calculate Calinski-Harabasz index in the new data set to determine the best number of cluster
-number_clusters = intCriteria(new_dataset, k$cluster, 'Calinski_Harabasz')
-print(number_clusters)
+number_clusters = NbClust(new_dataset, method = "kmeans",index = "ch")
+print(number_clusters$Best.nc)
 
 # 9 - Apply k-means method to new data set
-k = kmeans(new_dataset, 2, iter.max = 10000, nstart=10)
+k = kmeans(new_dataset, number_clusters)
 print(k$centers)
 
 #TODO:plotting ??

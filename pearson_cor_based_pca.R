@@ -1,4 +1,4 @@
-library(fpc)
+library(NbClust)
 
 # 1 - building the input matrix
 mat1.data = c(96,122.5,81,95.5,89,116,79,180,63.5,116,73,79,73,83,133.5,89,105,104,81,66.5,81,104,72.5,
@@ -36,13 +36,14 @@ for (element in 1:length(eigen_values)){
 # 5 - Derive the new data set
 new_dataset = pcs$rotation[,1:n]
 print(new_dataset)
+
 # 6 - Calculate Calinski-Harabasz index in the new data set to determine the best number of cluster
+number_clusters = NbClust(new_dataset, method = "kmeans",index = "ch")
+cs = number_clusters$Best.nc[2]
+
 
 # 7 - Apply k-means method to new data set
-number_clusters = calinhara(new_dataset)
-print(number_clusters)
-
-k = kmeans(new_dataset, 2, iter.max = 10000, nstart=10)
-print(k$center)
+k = kmeans(new_dataset, cs)
+print(k)
 
 #TODO: plotting ??
