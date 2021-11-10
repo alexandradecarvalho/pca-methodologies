@@ -28,14 +28,6 @@ rGPD = function(location, scale, shape, rows, cols){
 
 # 1 - building the input matrix
 input_matrix = rGPD(104.8, 54.7, 0.2, 250, 15)
-"""
-mat1.data = c(96,122.5,81,95.5,89,116,79,180,63.5,116,73,79,73,83,133.5,89,105,104,81,66.5,81,104,72.5,
-              126,270,167.5,65,92,61.5,131,145,91.5,138,95.5,153,139,80,198,123,90.5,126.5,92,121,94.5,60,60,
-              75,215.5,140.5,118.5,92.5,87,69.5,122.5,96.5,77,88.5,84.6,135,90.1,256.6,82.9,81.6,101.2,103.8,121.5,80,79.5,68.9,
-              62,81.5,243,220.5,78,95,68.5,60,103.5,73.5,64,61,78.5,127,75,83,87.5,72,155,133,70,61.5,71,
-              189.5,75,97,73.5,82.5,60.5,65,83.5,60.5,65,72.5,150,134,72,89,61.5,175,233,83.5,71.5,83,123,135)
-input_matrix = matrix(mat1.data,nrow=23,ncol=5)
-"""
 
 # 2 - Standardize the observation with median and mean absolute deviation (MAD)
 standarized = scale(input_matrix)
@@ -72,7 +64,7 @@ pcs = prcomp(tuckeys_biweight_cor_matrix)
 new_dataset = pcs$rotation[,1:n]
 
 # 8 - Calculate Calinski-Harabasz index in the new data set to determine the best number of cluster
-number_clusters = NbClust(new_dataset, method = "kmeans",index = "ch")
+number_clusters = NbClust(new_dataset, method = "kmeans", max.nc= n-1, index = "ch")
 print(number_clusters$Best.nc)
 
 # 9 - Apply k-means method to new data set
