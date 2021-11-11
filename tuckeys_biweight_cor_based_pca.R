@@ -1,5 +1,6 @@
 library(NbClust)
 library(biwt)
+library(ie2misc)
 
 ## script to generate random vars from a pareto distribution (GPD)
 ## it works following the equation seen on the wikipedia article
@@ -30,13 +31,13 @@ rGPD = function(location, scale, shape, rows, cols){
 input_matrix = rGPD(104.8, 54.7, 0.2, 250, 15)
 
 # 2 - Standardize the observation with median and mean absolute deviation (MAD)
-standarized = scale(input_matrix)
+standardized = madstat(input_matrix)
 
 # 3 - Set the breakdown point
 breakdown_point = 0.4  
   
 # 4 - Calculate Tuckey's biweight correlation matrix
-tuckeys_biweight_cor_matrix = biwt.cor(standarized)
+tuckeys_biweight_cor_matrix = biwt.cor(standardized, r=breakdown_point)
 
 # 5 - Calculate the correlation matrix's eigenvectors and eigenvalues (Eigenvalues = % variance captured)
 ev = eigen(tuckeys_biweight_cor_matrix)
