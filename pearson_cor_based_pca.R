@@ -69,6 +69,3 @@ cs = number_clusters$Best.nc[2]
 
 # 7 - Apply k-means method to new data set
 k = kmeans(new_dataset, cs)
-print(k)
-
-#TODO: plotting ??

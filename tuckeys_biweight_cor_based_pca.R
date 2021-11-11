@@ -1,6 +1,5 @@
 library(NbClust)
 library(biwt)
-library(ie2misc)
 
 ## script to generate random vars from a pareto distribution (GPD)
 ## it works following the equation seen on the wikipedia article
@@ -27,11 +26,15 @@ rGPD = function(location, scale, shape, rows, cols){
 
 }
 
+standardization = function(x){
+  return(x-mean(x)/(median(abs(x-median(x)))))
+}
+
 # 1 - building the input matrix
 input_matrix = rGPD(104.8, 54.7, 0.2, 250, 15)
 
 # 2 - Standardize the observation with median and mean absolute deviation (MAD)
-standardized = madstat(input_matrix)
+standardized = standardization(input_matrix)
 
 # 3 - Set the breakdown point
 breakdown_point = 0.4  
@@ -70,6 +73,3 @@ print(number_clusters$Best.nc)
 
 # 9 - Apply k-means method to new data set
 k = kmeans(new_dataset, number_clusters)
-print(k$centers)
-
-#TODO:plotting ??
