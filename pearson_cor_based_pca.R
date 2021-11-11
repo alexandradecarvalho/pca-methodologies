@@ -45,8 +45,7 @@ print(eigen_values)
 total_variance = sum(eigen_values)
 threshold = total_variance*0.7
 
-### ARE YOU SURE IT MUST BE APPLIED TO THE PEARSON CORR MATRIX??? ###
-pcs = prcomp(pearsons_cor_matrix)
+pcs = prcomp(input_matrix)
 ### shouldn't it be applied on the data matrix? ###
 #pcs = prcomp(input_matrix)  
 
@@ -65,8 +64,6 @@ print(new_dataset)
 
 # 6 - Calculate Calinski-Harabasz index in the new data set to determine the best number of cluster
 number_clusters = NbClust(new_dataset, method = "kmeans", max.nc= n-1, index = "ch")
-## previous line gives ERROR: number of cluster centres must lie between 1 and nrow(x)
-## do you have the same problem?
 cs = number_clusters$Best.nc[2]
 
 

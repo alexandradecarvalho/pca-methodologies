@@ -59,7 +59,7 @@ for (element in 1:length(eigen_values)){
   }
 }
 
-pcs = prcomp(tuckeys_biweight_cor_matrix)
+pcs = prcomp(standarized)
 
 # 7 - Derive the new data set
 new_dataset = pcs$rotation[,1:n]
