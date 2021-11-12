@@ -46,7 +46,6 @@ total_variance = sum(eigen_values)
 threshold = total_variance*0.7
 
 pcs = prcomp(input_matrix)
-### shouldn't it be applied on the data matrix? ###
   
 
 # calculate the sum of the eigenvalues until it is more than the threshold          
